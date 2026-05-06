@@ -75,8 +75,8 @@
   <div class="levers-col">
  
     <div class="section">
-      <div class="s-label">Tolerance level</div>
-      <div class="s-q">"How much tolerance do you have for your success metric changing? Is this a metric where even a small change would concern you, or are you mainly watching for large swings?"</div>
+      <div class="s-label">Success metric impact</div>
+      <div class="s-q">"How much tolerance do you have for your success metric changing? Is this a metric where even a small change would concern/interest you, or are you mainly watching for large swings?"</div>
       <div class="opts">
         <div class="opt" data-g="tol" data-v="0" onclick="pick(this)"><div>Low</div><div class="sub">1% shift matters</div></div>
         <div class="opt sel" data-g="tol" data-v="1" onclick="pick(this)"><div>Medium</div><div class="sub">2% shift matters</div></div>
@@ -96,7 +96,7 @@
  
     <div class="section">
       <div class="s-label">Metric type</div>
-      <div class="s-q">Rate/% metrics are fastest. Retention metrics have a built-in time lag (e.g. 21-day retention adds a hard 21-day floor — no amount of users can shorten it). Revenue/fee metrics are slowest due to high variance.</div>
+      <div class="s-q">Rate/% metrics (like conversion) are fastest. Retention metrics have a built-in time lag (e.g. 21-day retention adds a hard 21-day floor — no amount of users can shorten it). Revenue/fee metrics are slowest due to high variance.</div>
       <div class="opts">
         <div class="opt sel" data-g="metric" data-v="0" onclick="pick(this)"><div>Rate / %</div><div class="sub">Fastest to power</div></div>
         <div class="opt" data-g="metric" data-v="1" onclick="pick(this)"><div>Retention</div><div class="sub">21-day lag built in</div></div>
@@ -191,7 +191,7 @@
  
     const isMinExp=state.exp<=5;
     const drivers=[
-      {name:'Tolerance level', raw:TOL_MULT[state.tol], max:4.0, note:state.tol===0?'Low tolerance = many more users needed':null},
+      {name:'Success metric impact', raw:TOL_MULT[state.tol], max:4.0, note:state.tol===0?'Low tolerance = many more users needed':null},
       {name:'Confidence level', raw:CONF_MULT[state.conf], max:1.6, note:state.conf===2?'Definitive = largest sample required':null},
       {name:'Metric type', raw:METRIC_MULT[state.metric]+(METRIC_LAG[state.metric]/BASE), max:4.0+(21/BASE), note:state.metric===2?'High-variance metric inflates sample size':state.metric===1?'21-day lag — no lever removes this':null},
       {name:'Exposure %', raw:Math.min(em,10), max:10, note:isMinExp?'Very low exposure slows test significantly':null},
