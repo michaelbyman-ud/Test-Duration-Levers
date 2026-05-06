@@ -6,478 +6,211 @@
   <title>Test Duration Calculator — Underdog Fantasy PA</title>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
     :root {
-      --bg: #ffffff;
-      --bg-secondary: #f5f5f3;
-      --text: #1a1a1a;
-      --text-secondary: #6b6b6b;
-      --text-tertiary: #aaaaaa;
-      --border: rgba(0,0,0,0.12);
-      --border-hover: rgba(0,0,0,0.25);
-      --purple: #7F77DD;
-      --purple-bg: #EEEDFE;
-      --purple-text: #3C3489;
-      --purple-border: #534AB7;
-      --amber-border: #BA7517;
-      --green-border: #3B6D11;
-      --radius: 8px;
-      --radius-lg: 12px;
+      --bg: #ffffff; --bg-sec: #f5f5f3; --text: #1a1a1a;
+      --text2: #6b6b6b; --text3: #aaaaaa;
+      --border: rgba(0,0,0,0.12); --border2: rgba(0,0,0,0.25);
+      --gold: #F5E642; --gold-dark: #B8AA00;
+      --gold-bg: #FEFBE8; --gold-text: #5C5200;
+      --r: 8px; --rl: 12px;
     }
-
     @media (prefers-color-scheme: dark) {
       :root {
-        --bg: #1a1a1a;
-        --bg-secondary: #242424;
-        --text: #f0f0f0;
-        --text-secondary: #aaaaaa;
-        --text-tertiary: #666666;
-        --border: rgba(255,255,255,0.12);
-        --border-hover: rgba(255,255,255,0.28);
-        --purple-bg: #26215C;
-        --purple-text: #AFA9EC;
-        --purple-border: #7F77DD;
+        --bg: #111; --bg-sec: #1e1e1e; --text: #f0f0f0;
+        --text2: #aaa; --text3: #555;
+        --border: rgba(255,255,255,0.10); --border2: rgba(255,255,255,0.22);
+        --gold-dark: #F5E642; --gold-bg: #2A2500; --gold-text: #F5E642;
       }
     }
-
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      min-height: 100vh;
-      padding: 2rem 1rem;
-    }
-
-    .container {
-      max-width: 680px;
-      margin: 0 auto;
-    }
-
-    header {
-      margin-bottom: 2.5rem;
-    }
-
-    .eyebrow {
-      font-size: 11px;
-      font-weight: 500;
-      letter-spacing: 0.06em;
-      color: var(--purple);
-      text-transform: uppercase;
-      margin-bottom: 8px;
-    }
-
-    h1 {
-      font-size: 22px;
-      font-weight: 500;
-      color: var(--text);
-      margin-bottom: 6px;
-      line-height: 1.3;
-    }
-
-    .subtitle {
-      font-size: 14px;
-      color: var(--text-secondary);
-      line-height: 1.5;
-    }
-
-    .divider {
-      border: none;
-      border-top: 0.5px solid var(--border);
-      margin: 2rem 0;
-    }
-
-    .section {
-      margin-bottom: 1.5rem;
-    }
-
-    .s-label {
-      font-size: 11px;
-      font-weight: 500;
-      color: var(--text-secondary);
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-      margin-bottom: 5px;
-    }
-
-    .s-q {
-      font-size: 13px;
-      color: var(--text-secondary);
-      margin-bottom: 9px;
-      line-height: 1.5;
-      font-style: italic;
-    }
-
-    .opts {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-    }
-
-    .opt {
-      border: 0.5px solid var(--border-hover);
-      border-radius: var(--radius);
-      padding: 8px 14px;
-      cursor: pointer;
-      background: var(--bg);
-      font-size: 13px;
-      color: var(--text);
-      transition: border-color 0.1s, background 0.1s;
-      user-select: none;
-      line-height: 1.3;
-    }
-
-    .opt:hover { border-color: var(--purple); }
-
-    .opt.sel {
-      border: 1.5px solid var(--purple);
-      background: var(--purple-bg);
-      color: var(--purple-text);
-      font-weight: 500;
-    }
-
-    .opt .sub {
-      font-size: 11px;
-      color: var(--text-secondary);
-      margin-top: 2px;
-      font-weight: 400;
-    }
-
-    .opt.sel .sub { color: var(--purple-border); }
-
-    .slider-label-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-      margin-bottom: 5px;
-    }
-
-    .slider-val {
-      font-size: 13px;
-      font-weight: 500;
-      color: var(--text);
-    }
-
-    input[type=range] {
-      -webkit-appearance: none;
-      width: 100%;
-      height: 4px;
-      background: var(--border-hover);
-      border-radius: 2px;
-      outline: none;
-      cursor: pointer;
-    }
-
-    input[type=range]::-webkit-slider-thumb {
-      -webkit-appearance: none;
-      width: 18px;
-      height: 18px;
-      border-radius: 50%;
-      background: var(--purple);
-      cursor: pointer;
-    }
-
-    input[type=range]::-moz-range-thumb {
-      width: 18px;
-      height: 18px;
-      border-radius: 50%;
-      background: var(--purple);
-      cursor: pointer;
-      border: none;
-    }
-
-    .slider-ends {
-      display: flex;
-      justify-content: space-between;
-      font-size: 11px;
-      color: var(--text-tertiary);
-      margin-top: 4px;
-    }
-
-    .result-area {
-      background: var(--bg-secondary);
-      border-radius: var(--radius-lg);
-      padding: 1.5rem;
-    }
-
-    .result-dur-label {
-      font-size: 12px;
-      color: var(--text-secondary);
-      margin-bottom: 4px;
-      font-weight: 500;
-      letter-spacing: 0.03em;
-      text-transform: uppercase;
-    }
-
-    .result-dur {
-      font-size: 42px;
-      font-weight: 500;
-      color: var(--text);
-      margin-bottom: 1.5rem;
-      line-height: 1.1;
-    }
-
-    .drivers-title {
-      font-size: 11px;
-      font-weight: 500;
-      color: var(--text-secondary);
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-      margin-bottom: 14px;
-    }
-
-    .driver {
-      margin-bottom: 12px;
-    }
-
-    .driver-top {
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-      margin-bottom: 4px;
-    }
-
-    .driver-name {
-      font-size: 13px;
-      color: var(--text);
-    }
-
-    .driver-note {
-      font-size: 11px;
-      color: var(--purple);
-      max-width: 55%;
-      text-align: right;
-    }
-
-    .bar-track {
-      height: 5px;
-      background: var(--border);
-      border-radius: 3px;
-      overflow: hidden;
-    }
-
-    .bar-fill {
-      height: 100%;
-      border-radius: 3px;
-      background: var(--purple);
-      transition: width 0.35s ease;
-    }
-
-    .tip {
-      border-left: 2px solid var(--border-hover);
-      padding: 7px 12px;
-      font-size: 13px;
-      color: var(--text-secondary);
-      line-height: 1.5;
-      margin-top: 10px;
-    }
-
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; padding: 1.5rem 1.25rem; }
+    header { margin-bottom: 1.5rem; }
+    .eyebrow { font-size: 11px; font-weight: 500; letter-spacing: 0.06em; color: var(--gold-dark); text-transform: uppercase; margin-bottom: 6px; }
+    h1 { font-size: 20px; font-weight: 500; margin-bottom: 4px; line-height: 1.3; }
+    .subtitle { font-size: 13px; color: var(--text2); line-height: 1.5; }
+    .layout { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; align-items: start; }
+    @media (max-width: 720px) { .layout { grid-template-columns: 1fr; } }
+    .section { margin-bottom: 1.25rem; }
+    .s-label { font-size: 11px; font-weight: 500; color: var(--text2); letter-spacing: 0.04em; text-transform: uppercase; margin-bottom: 4px; }
+    .s-q { font-size: 12px; color: var(--text2); margin-bottom: 8px; line-height: 1.45; font-style: italic; }
+    .opts { display: flex; flex-wrap: wrap; gap: 5px; }
+    .opt { border: 0.5px solid var(--border2); border-radius: var(--r); padding: 7px 12px; cursor: pointer; background: var(--bg); font-size: 12.5px; color: var(--text); transition: border-color 0.1s, background 0.1s; user-select: none; line-height: 1.3; }
+    .opt:hover { border-color: var(--gold-dark); }
+    .opt.sel { border: 1.5px solid var(--gold-dark); background: var(--gold-bg); color: var(--gold-text); font-weight: 500; }
+    .opt .sub { font-size: 11px; color: var(--text2); margin-top: 2px; font-weight: 400; }
+    .opt.sel .sub { color: var(--gold-dark); opacity: 0.75; }
+    .slider-label-row { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 5px; }
+    .slider-val { font-size: 13px; font-weight: 500; }
+    input[type=range] { -webkit-appearance: none; width: 100%; height: 4px; background: var(--border2); border-radius: 2px; outline: none; cursor: pointer; }
+    input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 18px; height: 18px; border-radius: 50%; background: var(--gold-dark); cursor: pointer; }
+    input[type=range]::-moz-range-thumb { width: 18px; height: 18px; border-radius: 50%; background: var(--gold-dark); cursor: pointer; border: none; }
+    .slider-ends { display: flex; justify-content: space-between; font-size: 11px; color: var(--text3); margin-top: 4px; }
+    .result-col { position: sticky; top: 1.5rem; }
+    .result-area { background: var(--bg-sec); border-radius: var(--rl); padding: 1.5rem; border: 0.5px solid var(--border); }
+    .result-dur-label { font-size: 11px; font-weight: 500; color: var(--text2); margin-bottom: 4px; letter-spacing: 0.04em; text-transform: uppercase; }
+    .result-dur { font-size: 48px; font-weight: 500; margin-bottom: 1.5rem; line-height: 1.1; }
+    .drivers-title { font-size: 11px; font-weight: 500; color: var(--text2); letter-spacing: 0.04em; text-transform: uppercase; margin-bottom: 14px; }
+    .driver { margin-bottom: 12px; }
+    .driver-top { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 4px; }
+    .driver-name { font-size: 12.5px; }
+    .driver-note { font-size: 11px; color: var(--gold-dark); max-width: 55%; text-align: right; }
+    .bar-track { height: 5px; background: var(--border); border-radius: 3px; overflow: hidden; }
+    .bar-fill { height: 100%; border-radius: 3px; background: var(--gold-dark); transition: width 0.35s ease; }
+    .tip { border-left: 2px solid var(--border2); padding: 7px 12px; font-size: 12px; color: var(--text2); line-height: 1.5; margin-top: 8px; }
     .tip.warn { border-left-color: #BA7517; }
     .tip.good { border-left-color: #3B6D11; }
     .tip strong { font-weight: 500; color: var(--text); }
-
-    footer {
-      margin-top: 3rem;
-      padding-top: 1.5rem;
-      border-top: 0.5px solid var(--border);
-      font-size: 12px;
-      color: var(--text-tertiary);
-    }
+    footer { margin-top: 1.5rem; padding-top: 1rem; border-top: 0.5px solid var(--border); font-size: 12px; color: var(--text3); }
   </style>
 </head>
 <body>
-<div class="container">
-
-  <header>
-    <div class="eyebrow">Underdog Fantasy · Product Analytics</div>
-    <h1>How long will your test take?</h1>
-    <p class="subtitle">Adjust the levers below to see how your test design choices affect the time to reach statistical significance.</p>
-  </header>
-
-  <div class="section">
-    <div class="s-label">Tolerance level</div>
-    <div class="s-q">"How much tolerance do you have for your success metric changing? Is this a metric where even a small change would concern you, or are you mainly watching for large swings?"</div>
-    <div class="opts">
-      <div class="opt" data-g="tol" data-v="0" onclick="pick(this)">
-        <div>Low</div><div class="sub">1% shift matters</div>
-      </div>
-      <div class="opt sel" data-g="tol" data-v="1" onclick="pick(this)">
-        <div>Medium</div><div class="sub">2% shift matters</div>
-      </div>
-      <div class="opt" data-g="tol" data-v="2" onclick="pick(this)">
-        <div>High</div><div class="sub">Only large swings</div>
+ 
+<header>
+  <div class="eyebrow">Underdog Fantasy · Product Analytics</div>
+  <h1>How long will your test take?</h1>
+  <p class="subtitle">Adjust the levers to see how your test design choices affect time to significance.</p>
+</header>
+ 
+<div class="layout">
+ 
+  <div class="levers-col">
+ 
+    <div class="section">
+      <div class="s-label">Tolerance level</div>
+      <div class="s-q">"How much tolerance do you have for your success metric changing? Is this a metric where even a small change would concern you, or are you mainly watching for large swings?"</div>
+      <div class="opts">
+        <div class="opt" data-g="tol" data-v="0" onclick="pick(this)"><div>Low</div><div class="sub">1% shift matters</div></div>
+        <div class="opt sel" data-g="tol" data-v="1" onclick="pick(this)"><div>Medium</div><div class="sub">2% shift matters</div></div>
+        <div class="opt" data-g="tol" data-v="2" onclick="pick(this)"><div>High</div><div class="sub">Only large swings</div></div>
       </div>
     </div>
-  </div>
-
-  <div class="section">
-    <div class="s-label">Confidence level</div>
-    <div class="s-q">"How sure do we need to be that the results are real and not just random noise? Not every feature needs the same level of confidence — this is where you connect your conviction level and feature risk."</div>
-    <div class="opts">
-      <div class="opt" data-g="conf" data-v="0" onclick="pick(this)">
-        <div>Sanity check</div><div class="sub">80% — low bar</div>
-      </div>
-      <div class="opt sel" data-g="conf" data-v="1" onclick="pick(this)">
-        <div>Directional</div><div class="sub">90% — moderate</div>
-      </div>
-      <div class="opt" data-g="conf" data-v="2" onclick="pick(this)">
-        <div>Definitive</div><div class="sub">95% — high bar</div>
+ 
+    <div class="section">
+      <div class="s-label">Confidence level</div>
+      <div class="s-q">"How sure do we need to be that the results are real and not just random noise? Not every feature needs the same level of confidence — this is where you connect your conviction level and feature risk."</div>
+      <div class="opts">
+        <div class="opt" data-g="conf" data-v="0" onclick="pick(this)"><div>Sanity check</div><div class="sub">80% — low bar</div></div>
+        <div class="opt sel" data-g="conf" data-v="1" onclick="pick(this)"><div>Directional</div><div class="sub">90% — moderate</div></div>
+        <div class="opt" data-g="conf" data-v="2" onclick="pick(this)"><div>Definitive</div><div class="sub">95% — high bar</div></div>
       </div>
     </div>
-  </div>
-
-  <div class="section">
-    <div class="s-label">Metric type</div>
-    <div class="s-q">Rate/% metrics are fastest. Retention metrics have a built-in time lag (e.g. 21-day retention adds a hard 21-day floor — no amount of users can shorten it). Revenue/fee metrics are slowest due to high variance.</div>
-    <div class="opts">
-      <div class="opt sel" data-g="metric" data-v="0" onclick="pick(this)">
-        <div>Rate / %</div><div class="sub">Fastest to power</div>
-      </div>
-      <div class="opt" data-g="metric" data-v="1" onclick="pick(this)">
-        <div>Retention</div><div class="sub">21-day lag built in</div>
-      </div>
-      <div class="opt" data-g="metric" data-v="2" onclick="pick(this)">
-        <div>Revenue / fee</div><div class="sub">Slowest — high variance</div>
+ 
+    <div class="section">
+      <div class="s-label">Metric type</div>
+      <div class="s-q">Rate/% metrics are fastest. Retention metrics have a built-in time lag (e.g. 21-day retention adds a hard 21-day floor — no amount of users can shorten it). Revenue/fee metrics are slowest due to high variance.</div>
+      <div class="opts">
+        <div class="opt sel" data-g="metric" data-v="0" onclick="pick(this)"><div>Rate / %</div><div class="sub">Fastest to power</div></div>
+        <div class="opt" data-g="metric" data-v="1" onclick="pick(this)"><div>Retention</div><div class="sub">21-day lag built in</div></div>
+        <div class="opt" data-g="metric" data-v="2" onclick="pick(this)"><div>Revenue / fee</div><div class="sub">Slowest — high variance</div></div>
       </div>
     </div>
-  </div>
-
-  <div class="section">
-    <div class="s-label">Number of variants</div>
-    <div class="s-q">A/B tests can expose up to 50% per arm. A/B/C tests split traffic across 3 arms — each arm gets fewer users per day, which slows things down. Max exposure per arm drops to 33%.</div>
-    <div class="opts">
-      <div class="opt sel" data-g="variant" data-v="0" onclick="pick(this)">
-        <div>A/B test</div><div class="sub">2 groups — max 50%</div>
-      </div>
-      <div class="opt" data-g="variant" data-v="1" onclick="pick(this)">
-        <div>A/B/C test</div><div class="sub">3 groups — max 33%</div>
+ 
+    <div class="section">
+      <div class="s-label">Number of variants</div>
+      <div class="s-q">A/B tests can expose up to 50% per arm. A/B/C tests split traffic across 3 arms — each arm gets fewer users per day, slowing things down. Max exposure per arm drops to 33%.</div>
+      <div class="opts">
+        <div class="opt sel" data-g="variant" data-v="0" onclick="pick(this)"><div>A/B test</div><div class="sub">2 groups — max 50%</div></div>
+        <div class="opt" data-g="variant" data-v="1" onclick="pick(this)"><div>A/B/C test</div><div class="sub">3 groups — max 33%</div></div>
       </div>
     </div>
-  </div>
-
-  <div class="section">
-    <div class="slider-label-row">
-      <div class="s-label" style="margin-bottom:0;">Exposure %</div>
-      <div class="slider-val" id="exp-val">50% of eligible users</div>
+ 
+    <div class="section">
+      <div class="slider-label-row">
+        <div class="s-label" style="margin-bottom:0;">Exposure %</div>
+        <div class="slider-val" id="exp-val">50% of eligible users</div>
+      </div>
+      <div class="s-q">More exposed users = faster results. But riskier features warrant lower exposure. For high financial risk features with retention metrics, keep this low — more users can't shorten the lag.</div>
+      <input type="range" id="exp" min="1" max="50" step="1" value="50" oninput="calc()">
+      <div class="slider-ends"><span id="exp-min-lbl">1%</span><span id="exp-max-lbl">50%</span></div>
     </div>
-    <div class="s-q">More exposed users = faster results. But riskier features warrant lower exposure. For retention metrics with high financial risk, keep this low — more users can't shorten the lag.</div>
-    <input type="range" id="exp" min="1" max="50" step="1" value="50" oninput="calc()">
-    <div class="slider-ends"><span id="exp-min-lbl">1%</span><span id="exp-max-lbl">50%</span></div>
-  </div>
-
-  <div class="section">
-    <div class="s-label">Audience reach</div>
-    <div class="s-q">New user tests and features in rarely-used parts of the app have far fewer eligible users per day than features on the home screen or entry slip, dramatically slowing time to significance.</div>
-    <div class="opts">
-      <div class="opt" data-g="reach" data-v="0" onclick="pick(this)">
-        <div>New users only</div><div class="sub">Smallest pool</div>
-      </div>
-      <div class="opt" data-g="reach" data-v="1" onclick="pick(this)">
-        <div>Subset of users</div><div class="sub">Moderate traffic</div>
-      </div>
-      <div class="opt sel" data-g="reach" data-v="2" onclick="pick(this)">
-        <div>All users — main surface</div><div class="sub">Largest pool</div>
+ 
+    <div class="section">
+      <div class="s-label">Audience reach</div>
+      <div class="s-q">New user tests and features in rarely-used parts of the app have far fewer eligible users per day than features on the home screen or entry slip, dramatically slowing time to significance.</div>
+      <div class="opts">
+        <div class="opt" data-g="reach" data-v="0" onclick="pick(this)"><div>New users only</div><div class="sub">Smallest pool</div></div>
+        <div class="opt" data-g="reach" data-v="1" onclick="pick(this)"><div>Subset of users</div><div class="sub">Moderate traffic</div></div>
+        <div class="opt sel" data-g="reach" data-v="2" onclick="pick(this)"><div>All users — main surface</div><div class="sub">Largest pool</div></div>
       </div>
     </div>
+ 
   </div>
-
-  <hr class="divider">
-
-  <div class="result-area">
-    <div class="result-dur-label">Estimated test duration</div>
-    <div class="result-dur" id="result-dur">—</div>
-
-    <div class="drivers-title">What's driving duration?</div>
-    <div id="drivers"></div>
-    <div id="tips"></div>
+ 
+  <div class="result-col">
+    <div class="result-area">
+      <div class="result-dur-label">Estimated test duration</div>
+      <div class="result-dur" id="result-dur">—</div>
+      <div class="drivers-title">What's driving duration?</div>
+      <div id="drivers"></div>
+      <div id="tips"></div>
+    </div>
+    <footer>Built by Product Analytics · Underdog Fantasy · Questions? Reach out to Michael Byman</footer>
   </div>
-
-  <footer>
-    Built by Product Analytics · Underdog Fantasy · Questions? Reach out to Michael Byman
-  </footer>
-
+ 
 </div>
-
+ 
 <script>
-  const state = { tol: 1, conf: 1, metric: 0, variant: 0, exp: 50, reach: 2 };
-
-  const TOL_MULT    = [4.0, 1.0, 0.28];
-  const CONF_MULT   = [0.55, 1.0, 1.6];
-  const METRIC_MULT = [1.0, 2.0, 4.0];
-  const METRIC_LAG  = [0, 21, 0];
-  const VARIANT_MULT = [1.0, 1.75];
-  const REACH_MULT   = [5.0, 2.0, 1.0];
-  const MAX_EXP = [50, 33];
-  const BASE = 14;
-
+  const state = { tol:1, conf:1, metric:0, variant:0, exp:50, reach:2 };
+  const TOL_MULT=[4.0,1.0,0.28], CONF_MULT=[0.55,1.0,1.6];
+  const METRIC_MULT=[1.0,2.0,4.0], METRIC_LAG=[0,21,0];
+  const VARIANT_MULT=[1.0,1.75], REACH_MULT=[5.0,2.0,1.0];
+  const MAX_EXP=[50,33], BASE=14;
+ 
   function pick(el) {
-    const g = el.dataset.g;
-    document.querySelectorAll('[data-g="' + g + '"]').forEach(e => e.classList.remove('sel'));
+    const g=el.dataset.g;
+    document.querySelectorAll('[data-g="'+g+'"]').forEach(e=>e.classList.remove('sel'));
     el.classList.add('sel');
-    state[g] = +el.dataset.v;
-    if (g === 'variant') {
-      const mx = MAX_EXP[state.variant];
-      const slider = document.getElementById('exp');
-      slider.max = mx;
-      if (+slider.value > mx) slider.value = mx;
-      state.exp = +slider.value;
-      document.getElementById('exp-max-lbl').textContent = mx + '%';
+    state[g]=+el.dataset.v;
+    if(g==='variant'){
+      const mx=MAX_EXP[state.variant];
+      const s=document.getElementById('exp');
+      s.max=mx; if(+s.value>mx) s.value=mx;
+      state.exp=+s.value;
+      document.getElementById('exp-max-lbl').textContent=mx+'%';
     }
     calc();
   }
-
+ 
   function calc() {
-    const slider = document.getElementById('exp');
-    state.exp = +slider.value;
-    document.getElementById('exp-val').textContent = state.exp + '% of eligible users';
-
-    const expMult = 50 / state.exp;
-    const rawDays = BASE * TOL_MULT[state.tol] * CONF_MULT[state.conf] * METRIC_MULT[state.metric] * VARIANT_MULT[state.variant] * REACH_MULT[state.reach] * expMult;
-    const totalDays = rawDays + METRIC_LAG[state.metric];
-    const d = Math.round(totalDays);
-
-    let label;
-    if (d <= 5) label = Math.max(1, d) + ' day' + (d !== 1 ? 's' : '');
-    else if (d <= 10) label = '~1 week';
-    else if (d <= 17) label = '~2 weeks';
-    else if (d <= 25) label = '~3 weeks';
-    else if (d <= 42) label = '~1 month';
-    else if (d <= 70) label = '~2 months';
-    else if (d <= 100) label = '~3 months';
-    else label = Math.ceil(d / 30) + '+ months';
-
-    document.getElementById('result-dur').textContent = label;
-
-    const isMinExp = state.exp <= 5;
-    const drivers = [
-      { name: 'Tolerance level',  raw: TOL_MULT[state.tol],  max: 4.0, note: state.tol === 0 ? 'Low tolerance = many more users needed' : null },
-      { name: 'Confidence level', raw: CONF_MULT[state.conf], max: 1.6, note: state.conf === 2 ? 'Definitive = largest sample required' : null },
-      { name: 'Metric type',      raw: METRIC_MULT[state.metric] + (METRIC_LAG[state.metric] / BASE), max: 4.0 + (21 / BASE), note: state.metric === 2 ? 'High-variance metric inflates sample size' : state.metric === 1 ? '21-day lag — no lever can shorten this' : null },
-      { name: 'Exposure %',       raw: Math.min(expMult, 10), max: 10, note: isMinExp ? 'Very low exposure slows test significantly' : null },
-      { name: 'Variants',         raw: VARIANT_MULT[state.variant], max: 1.75, note: state.variant === 1 ? 'More variants = fewer users per arm' : null },
-      { name: 'Audience reach',   raw: REACH_MULT[state.reach], max: 5.0, note: state.reach === 0 ? 'New users = small daily eligible pool' : null },
+    const s=document.getElementById('exp');
+    state.exp=+s.value;
+    document.getElementById('exp-val').textContent=state.exp+'% of eligible users';
+    const em=50/state.exp;
+    const raw=BASE*TOL_MULT[state.tol]*CONF_MULT[state.conf]*METRIC_MULT[state.metric]*VARIANT_MULT[state.variant]*REACH_MULT[state.reach]*em;
+    const tot=raw+METRIC_LAG[state.metric];
+    const d=Math.round(tot);
+    let lbl;
+    if(d<=5) lbl=Math.max(1,d)+' day'+(d!==1?'s':'');
+    else if(d<=10) lbl='~1 week';
+    else if(d<=17) lbl='~2 weeks';
+    else if(d<=25) lbl='~3 weeks';
+    else if(d<=42) lbl='~1 month';
+    else if(d<=70) lbl='~2 months';
+    else if(d<=100) lbl='~3 months';
+    else lbl=Math.ceil(d/30)+'+ months';
+    document.getElementById('result-dur').textContent=lbl;
+ 
+    const isMinExp=state.exp<=5;
+    const drivers=[
+      {name:'Tolerance level', raw:TOL_MULT[state.tol], max:4.0, note:state.tol===0?'Low tolerance = many more users needed':null},
+      {name:'Confidence level', raw:CONF_MULT[state.conf], max:1.6, note:state.conf===2?'Definitive = largest sample required':null},
+      {name:'Metric type', raw:METRIC_MULT[state.metric]+(METRIC_LAG[state.metric]/BASE), max:4.0+(21/BASE), note:state.metric===2?'High-variance metric inflates sample size':state.metric===1?'21-day lag — no lever removes this':null},
+      {name:'Exposure %', raw:Math.min(em,10), max:10, note:isMinExp?'Very low exposure slows test significantly':null},
+      {name:'Variants', raw:VARIANT_MULT[state.variant], max:1.75, note:state.variant===1?'More variants = fewer users per arm':null},
+      {name:'Audience reach', raw:REACH_MULT[state.reach], max:5.0, note:state.reach===0?'New users = small daily eligible pool':null},
     ];
-
-    document.getElementById('drivers').innerHTML = drivers.map(d => {
-      const pct = Math.round(Math.min(100, Math.max(4, (d.raw / d.max) * 100)));
-      return '<div class="driver">' +
-        '<div class="driver-top">' +
-          '<span class="driver-name">' + d.name + '</span>' +
-          (d.note ? '<span class="driver-note">' + d.note + '</span>' : '') +
-        '</div>' +
-        '<div class="bar-track"><div class="bar-fill" style="width:' + pct + '%"></div></div>' +
-        '</div>';
+    document.getElementById('drivers').innerHTML=drivers.map(dr=>{
+      const pct=Math.round(Math.min(100,Math.max(4,(dr.raw/dr.max)*100)));
+      return '<div class="driver"><div class="driver-top"><span class="driver-name">'+dr.name+'</span>'+(dr.note?'<span class="driver-note">'+dr.note+'</span>':'')+'</div><div class="bar-track"><div class="bar-fill" style="width:'+pct+'%"></div></div></div>';
     }).join('');
-
-    const tips = [];
-    if (state.metric === 1) tips.push({ type: 'warn', text: '<strong>Retention lag:</strong> 21-day retention adds a hard 21-day floor to your test. No matter how many users you expose, you can\'t observe the metric any faster — this can\'t be shortened by any other lever.' });
-    if (state.metric === 2) tips.push({ type: 'warn', text: '<strong>High-variance metric:</strong> revenue and fee metrics have wide value distributions, which inflates the required sample size significantly. Consider using conversion rate or entry count as a faster proxy metric.' });
-    if (state.tol === 0 && state.conf === 2) tips.push({ type: 'warn', text: '<strong>Tough combination:</strong> low tolerance + definitive confidence means detecting very small effects with very high certainty. Ask yourself if you truly need both — relaxing either one meaningfully shortens the test.' });
-    if (state.reach === 0) tips.push({ type: 'warn', text: '<strong>Small audience:</strong> new user tests have far fewer eligible users per day. Increasing exposure % helps, but only if the feature risk allows it.' });
-    if (tips.length === 0 && d <= 17 && state.reach === 2 && state.metric === 0) tips.push({ type: 'good', text: 'Well-powered setup — this combination should give you a clear read within a reasonable window.' });
-
-    document.getElementById('tips').innerHTML = tips.map(t => '<div class="tip ' + t.type + '">' + t.text + '</div>').join('');
+ 
+    const tips=[];
+    if(state.metric===1) tips.push({type:'warn',text:'<strong>Retention lag:</strong> 21-day retention adds a hard 21-day floor. No matter how many users you expose, you can\'t observe the metric any faster.'});
+    if(state.metric===2) tips.push({type:'warn',text:'<strong>High-variance metric:</strong> revenue and fee metrics inflate the required sample size. Consider conversion rate or entry count as a faster proxy.'});
+    if(state.tol===0&&state.conf===2) tips.push({type:'warn',text:'<strong>Tough combination:</strong> low tolerance + definitive confidence requires detecting very small effects with very high certainty. Relaxing either one meaningfully shortens the test.'});
+    if(state.reach===0) tips.push({type:'warn',text:'<strong>Small audience:</strong> new user tests have far fewer eligible users per day. Increasing exposure % helps, but only if the feature risk allows it.'});
+    if(tips.length===0&&d<=17&&state.reach===2&&state.metric===0) tips.push({type:'good',text:'Well-powered setup — this combination should give you a clear read within a reasonable window.'});
+    document.getElementById('tips').innerHTML=tips.map(t=>'<div class="tip '+t.type+'">'+t.text+'</div>').join('');
   }
-
   calc();
 </script>
 </body>
